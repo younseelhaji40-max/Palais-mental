@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palais Mental - Créez votre mémoire spatiale</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <span>Palais Mental</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Accueil</a></li>
+                <li><a href="#create"><i class="fas fa-plus-circle"></i> Créer</a></li>
+                <li><a href="#my-palaces"><i class="fas fa-landmark"></i> Mes Palais</a></li>
+                <li><a href="#learn" onclick="startTutorial()"><i class="fas fa-graduation-cap"></i> Apprendre</a></li>
+                <li><button id="dark-mode-toggle"><i class="fas fa-moon"></i> Mode Sombre</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Construisez votre <span class="highlight">Palais Mental</span></h1>
+            <p>La **méthode des loci**, utilisée depuis l'Antiquité, permet de mémoriser l'incroyable en transformant vos souvenirs en chemin spatial et visuel. Commencez dès aujourd'hui !</p>
+            <a href="#create" class="cta-button">
+                <i class="fas fa-plus"></i> Commencer la construction
+            </a>
+            <button class="cta-button" onclick="startTutorial()">
+                <i class="fas fa-magic"></i> Voir le Tutoriel
+            </button>
+        </div>
+        <div class="hero-image">
+            <div class="palace-visualization">
+                <div class="room" id="room1">
+                    <div class="station" data-content="Clé">🗝️</div>
+                </div>
+                <div class="room" id="room2">
+                    <div class="station" data-content="Livre">📚</div>
+                </div>
+                <div class="corridor"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="create" class="creator-section">
+        <h2><i class="fas fa-edit"></i> Créateur de Palais</h2>
+        
+        <div class="creator-container">
+            <div class="palace-form">
+                <h3>1. Configuration du Lieu</h3>
+                <div class="form-group">
+                    <label for="palace-name"><i class="fas fa-signature"></i> Nom du Palais</label>
+                    <input type="text" id="palace-name" placeholder="Ex: Maison d'enfance, Parc préféré...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="palace-type"><i class="fas fa-map"></i> Type de Lieu</label>
+                    <select id="palace-type">
+                        <option value="house">Maison/Appartement</option>
+                        <option value="park">Parc/Jardin</option>
+                        <option value="street">Rue/Chemin</option>
+                        <option value="building">Bâtiment Public</option>
+                        <option value="imaginary">Lieu Imaginaire</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-palette"></i> Thème Visuel</label>
+                    <div class="theme-selector">
+                        <button class="theme-btn active" data-theme="classic">Classique</button>
+                        <button class="theme-btn" data-theme="modern">Moderne</button>
+                        <button class="theme-btn" data-theme="fantasy">Fantaisie</button>
+                        <button class="theme-btn" data-theme="minimal">Minimaliste</button>
+                    </div>
+                </div>
+                
+                <button class="create-btn" onclick="createNewPalace()">
+                    <i class="fas fa-plus"></i> Enregistrer et Éditer
+                </button>
+            </div>
+            
+            <div class="palace-preview">
+                <div class="preview-header">
+                    <h3>2. Carte et Pièces</h3>
+                    <div class="tools">
+                        <button class="tool-btn" title="Ajouter une pièce" data-tool="room"><i class="fas fa-plus-square"></i></button>
+                        <button class="tool-btn" title="Ajouter un objet" data-tool="station"><i class="fas fa-cube"></i></button>
+                        <button class="tool-btn" title="Déplacer" data-tool="move"><i class="fas fa-arrows-alt"></i></button>
+                        <button class="tool-btn" title="Supprimer" data-tool="delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="preview-canvas" id="palace-canvas">
+                    <p>Cliquez ou utilisez les outils ci-dessus pour ajouter des pièces.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stations-section">
+        <h2><i class="fas fa-map-marker-alt"></i> 3. Stations de Mémoire (Loci)</h2>
+        
+        <div class="stations-container">
+            <div class="stations-list" id="stations-list">
+                <h3>Stations Actuelles</h3>
+                <p class="placeholder-text">Créez une station pour la voir ici.</p>
+            </div>
+            
+            <div class="station-editor">
+                <h3>Éditer la Station SÉLECTIONNÉE</h3>
+                <div class="form-group">
+                    <label for="station-name">Nom de l'objet (Locé)</label>
+                    <input type="text" id="station-name" placeholder="Ex: Porte rouge, Table ancienne...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="station-room-selector">Lier à la Pièce (Locum)</label>
+                    <select id="station-room-selector">
+                        <option value="">(Aucune pièce sélectionnée)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="station-content">Information à mémoriser (Mnémonique)</label>
+                    <textarea id="station-content" rows="4" placeholder="Associez une information forte, visuelle et émotionnelle à cet objet..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="station-image">Image associée (Rappel Visuel)</label>
+                    <div class="image-upload">
+                        <input type="file" id="station-image" accept="image/*" hidden>
+                        <label for="station-image" class="upload-btn">
+                            <i class="fas fa-cloud-upload-alt"></i> Choisir une image
+                        </label>
+                        <span id="image-name">Aucune image sélectionnée</span>
+                    </div>
+                </div>
+                
+                <button class="save-btn" onclick="saveStation()">
+                    <i class="fas fa-save"></i> Enregistrer la Station
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="my-palaces" class="palaces-section">
+        <h2><i class="fas fa-landmark"></i> Mes Palais</h2>
+        <div class="palaces-grid" id="palaces-grid">
+            </div>
+    </section>
+
+    <div id="tutorial-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTutorial()">&times;</span>
+            <h2><i class="fas fa-graduation-cap"></i> Tutoriel: Créer votre premier Palais Mental</h2>
+            <div class="tutorial-steps">
+                <div class="step active">
+                    <h3>Étape 1: Choisissez un lieu familier (Le Palais)</h3>
+                    <p>Visualisez un endroit que vous connaissez bien (votre maison, votre chemin de travail, etc.) — c'est le **Palais**.</p>
+                </div>
+                <div class="step">
+                    <h3>Étape 2: Définissez un parcours (Les Pièces)</h3>
+                    <p>Imaginez un chemin logique à travers ce lieu, avec des points d'arrêt spécifiques (les **Pièces** ou **Chambres**).</p>
+                </div>
+                <div class="step">
+                    <h3>Étape 3: Placez des objets mémorables (Les Stations)</h3>
+                    <p>À chaque point d'arrêt (Pièce), associez un objet visuel frappant à l'information à retenir. C'est votre **Station de Mémoire**.</p>
+                </div>
+                <div class="step">
+                    <h3>Étape 4: Parcourez mentalement (La Révocation)</h3>
+                    <p>Fermez les yeux et suivez le chemin pièce par pièce pour récupérer les informations stockées. La répétition renforce la connexion spatiale !</p>
+                </div>
+            </div>
+            <button class="next-step" onclick="nextTutorialStep()">Suivant</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-brain"></i> Palais Mental</h3>
+                <p>Améliorez votre mémoire avec la méthode des loci, utilisée depuis l'Antiquité, de manière moderne et interactive.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <a href="#">Guide du débutant</a>
+                <a href="#">Exemples de palais</a>
+                <a href="#">Recherches scientifiques</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>contact@palais-mental.fr</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Palais Mental. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
